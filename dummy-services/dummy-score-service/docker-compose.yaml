@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  dummy-score-service:
+    image: 322456/dummy-score-service:latest
+    pid: host
+    ports:
+      - 8081:8081
+    volumes:
+      - shared-instrumentation-data:/shared-data
+      - /proc:/host/proc
+  dummy-score-database:
+    image: mongo:latest
+    pid: host
+    ports:
+      - "27017:27017"
+  # dummy-score-instrumentation:
+  #   image: 322456/otel-go-autoinstrumentation:latest
+  #   environment:
+  #     OTEL_EXPORTER_OTLP_ENDPOINT: http://autoinstrumentation-playground-otel-collector-1:4317
+  #     OTEL_SERVICE_NAME: dummy-score-service
+  #     OTEL_GO_AUTO_TARGET_EXE: /app/bin/scoreservice
+  #     OTEL_PROPAGATORS: tracecontext,baggage
+  #     CGO_ENABLED: 1
+  #   privileged: true
+  #   pid: host
+  #   volumes:
+  #     - shared-instrumentation-data:/shared-data
+  #     - /proc:/host/proc
+
+volumes:
+  shared-instrumentation-data:

@@ -1,0 +1,116 @@
+version: '3'
+
+services:
+  #Frontend application
+  dummy-frontend:
+    extends:
+      file: ./dummy-frontend/docker-compose.yaml
+      service: dummy-frontend
+    depends_on:
+      - dummy-gateway
+    networks:
+      - dummy-network
+  
+  #Simple api gateway
+  dummy-gateway:
+    extends:
+      file: ./dummy-gateway/docker-compose.yaml
+      service: dummy-gateway
+    depends_on:
+      - dummy-profile-service
+      - dummy-score-service
+      # - otel-collector
+      # - jaeger
+    networks:
+      - dummy-network
+
+  #Profile service with data store
+  dummy-profile-service:
+    extends:
+      file: ./dummy-profile-service/docker-compose.yaml
+      service: dummy-profile-service
+    env_file:
+      - ./dummy-profile-service/.env
+    depends_on:
+      - dummy-profile-database
+      # - otel-collector
+      # - jaeger
+    networks:
+      - dummy-network
+  dummy-profile-database:
+    extends:
+      file: ./dummy-profile-service/docker-compose.yaml
+      service: dummy-profile-database
+    networks:
+      - dummy-network
+
+  #Score service with data store and autoinstrumenations tool attached
+  dummy-score-service:
+    extends:
+      file: ./dummy-score-service/docker-compose.yaml
+      service: dummy-score-service
+    depends_on:
+      - dummy-score-database
+    networks:
+      - dummy-network
+  dummy-score-instrumentation:
+    extends:
+      file: ./dummy-score-service/docker-compose.yaml
+      service: dummy-score-instrumentation
+    depends_on:
+      - dummy-score-service
+      # - otel-collector
+      # - jaeger
+    networks:
+      - dummy-network
+  dummy-score-database:
+    extends:
+      file: ./dummy-score-service/docker-compose.yaml
+      service: dummy-score-database
+    networks:
+      - dummy-network
+  # dummy-score-service-http:
+  #   extends:
+  #     file: ./dummy-score-service-http/docker-compose.yaml
+  #     service: dummy-score-service-http
+  #   depends_on:
+  #     - dummy-score-database
+  #   networks:
+  #     - dummy-network
+  # dummy-score-instrumentation-http:
+  #   extends:
+  #     file: ./dummy-score-service-http/docker-compose.yaml
+  #     service: dummy-score-instrumentation-http
+  #   depends_on:
+  #     - dummy-score-service-http
+  #     - otel-collector
+  #     - jaeger
+  #   networks:
+  #     - dummy-network
+
+  # #OpenTelemetry collector
+  # otel-collector:
+  #   extends:
+  #     file: ./docker/observability-stack/opentelemetry-collector/docker-compose.yaml
+  #     service: otel-collector
+  #   depends_on:
+  #     - jaeger
+  #   networks:
+  #     - dummy-network
+  
+  # #Jaeger
+  # jaeger:
+  #   extends:
+  #     file: ./docker/observability-stack/jaeger/docker-compose.yaml
+  #     service: jaeger-tracing
+  #   networks:
+  #     - dummy-network
+  
+
+networks:
+  dummy-network:
+    driver: bridge
+
+volumes:
+  shared-instrumentation-data:
+  

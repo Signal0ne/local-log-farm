@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  dummy-gateway:
+    image: 322456/dummy-gateway:latest
+    env_file:
+      - ./.env
+    ports:
+      - 8080:8080

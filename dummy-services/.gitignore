@@ -1,0 +1,6 @@
+*.env
+/dummy-gateway/bin
+/dummy-gateway/obj
+/dummy-frontend/node_modules
+/dummy-frontend/dist
+/utils

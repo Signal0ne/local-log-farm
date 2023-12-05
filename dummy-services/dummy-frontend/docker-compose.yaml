@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  dummy-frontend:
+    image: 322456/dummy-frontend:latest
+    ports:
+      - 80:80

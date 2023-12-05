@@ -1,0 +1,51 @@
+<div class="container">
+    <div>
+        <h2>SET PROFILE</h2>
+        <div class="fg">
+            <label>Name:</label>
+            <input [(ngModel)]="setProfileName">
+        </div>
+        <div class="fg">
+            <label>Email:</label>
+            <input [(ngModel)]="setProfileEmail">
+        </div>
+        <button class="m-2" (click)="setProfile()">Send request</button>
+        <div>
+            <button class="m-2" (click)="startSetProfileInterval()">SET INTERVAL</button>
+            <button class="m-2" (click)="clearSetProfileInterval()">CLEAR INTERVAL</button>
+        </div>
+    </div>
+    <div>
+        <h2>GET PROFILE</h2>
+        <div class="fg">
+            <label>Profile ID:</label>
+            <input [(ngModel)]="getProfileId">
+        </div>
+        <button class="m-2" (click)="getProfile()">Send request</button>
+        <div>
+            <button class="m-2" (click)="startGetProfileInterval()">SET INTERVAL</button>
+            <button class="m-2" (click)="clearGetProfileInterval()">CLEAR INTERVAL</button>
+        </div>
+    </div>
+    <div>
+        <h2>SET SCORE</h2>
+        <div class="fg">
+            <label>User Profile:</label>
+            <input [(ngModel)]="setScoreUserProfile">
+        </div>
+        <div class="fg">
+            <label>Score:</label>
+            <input type="number" [(ngModel)]="setScoreScore">
+        </div>
+        <button class="m-2" (click)="setScore()">Send request</button>
+        <div>
+            <button class="m-2" (click)="startSetScoreInterval()">SET INTERVAL</button>
+            <button class="m-2" (click)="clearSetScoreInterval()">CLEAR INTERVAL</button>
+        </div>
+    </div>
+</div>
+<div>
+    <h2>Manage complete interval</h2>
+    <button class="m-2" (click)="startCompleteInterval()">Start</button>
+    <button class="m-2" (click)="clearCompleteInterval()">Stop</button>
+</div>
