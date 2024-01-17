@@ -1,0 +1,128 @@
+version: '3'
+
+services:
+  emailservice:
+    container_name: emailservice
+    image: gcr.io/google-samples/microservices-demo/emailservice:v0.8.1
+    ports:
+      - 5000:8080
+    environment:
+      PORT: 8080
+      DISABLE_PROFILER: 1
+    networks:
+      - main-network
+  checkoutservice:
+    container_name: checkoutservice
+    image: gcr.io/google-samples/microservices-demo/checkoutservice:v0.8.1
+    ports:
+      - 5050:5050
+    environment:
+      PORT: 5050
+      PRODUCT_CATALOG_SERVICE_ADDR: "productcatalogservice:3550"
+      SHIPPING_SERVICE_ADDR: "shippingservice:50052"
+      PAYMENT_SERVICE_ADDR: "paymentservice:50051"
+      EMAIL_SERVICE_ADDR: "emailservice:5000"
+      CURRENCY_SERVICE_ADDR: "currencyservice:7000"
+      CART_SERVICE_ADDR: "cartservice:7070"
+    networks:
+      - main-network
+  recommendationservice:
+    container_name: recommendationservice
+    image: gcr.io/google-samples/microservices-demo/recommendationservice:v0.8.1
+    ports:
+      - 8080:8080
+    environment:
+      PORT: 8080
+      DISABLE_PROFILER: 1
+      PRODUCT_CATALOG_SERVICE_ADDR: "productcatalogservice:3550"
+    networks:
+      - main-network
+  frontend:
+    container_name: frontend
+    image: gcr.io/google-samples/microservices-demo/frontend:v0.8.1
+    ports:
+      - 80:8080
+    environment:
+      PORT: 8080
+      PRODUCT_CATALOG_SERVICE_ADDR: "productcatalogservice:3550"
+      CURRENCY_SERVICE_ADDR: "currencyservice:7000"
+      CART_SERVICE_ADDR: "cartservice:7070"
+      RECOMMENDATION_SERVICE_ADDR: "recommendationservice:8080"
+      SHIPPING_SERVICE_ADDR: "shippingservice:50052"
+      CHECKOUT_SERVICE_ADDR: "checkoutservice:5050"
+      AD_SERVICE_ADDR: "adservice:9555"
+      ENABLE_PROFILER: 0
+    networks:
+      - main-network
+  paymentservice:
+    container_name: paymentservice
+    image: gcr.io/google-samples/microservices-demo/paymentservice:v0.8.1
+    ports:
+      - 50051:50051
+    environment:
+      PORT: 50051
+      DISABLE_PROFILER: 1
+    networks:
+      - main-network
+  productcatalogservice:
+    container_name: productcatalogservice
+    image: gcr.io/google-samples/microservices-demo/productcatalogservice:v0.8.1
+    ports:
+      - 3550:3550
+    environment:
+      PORT: 3550
+      DISABLE_PROFILER: 1
+    networks:
+      - main-network
+  cartservice:
+    container_name: cartservice
+    image: gcr.io/google-samples/microservices-demo/cartservice:v0.8.1
+    ports:
+      - 7070:7070
+    environment:
+      PORT: 7070
+      DISABLE_PROFILER: 1
+    networks:
+      - main-network
+  currencyservice:
+    container_name: currencyservice
+    image: gcr.io/google-samples/microservices-demo/currencyservice:v0.8.1
+    ports:
+      - 7000:7000
+    environment:
+      PORT: 7000
+      DISABLE_PROFILER: 1
+    networks:
+      - main-network
+  shippingservice:
+    container_name: shippingservice
+    image: gcr.io/google-samples/microservices-demo/shippingservice:v0.8.1
+    ports:
+      - 50052:50052
+    environment:
+      PORT: 50052
+      DISABLE_PROFILER: 1
+    networks:
+      - main-network
+  adservice:
+    container_name: adservice
+    image: gcr.io/google-samples/microservices-demo/adservice:v0.8.1
+    ports:
+      - 9555:9555
+    environment:
+      PORT: 9555
+      DISABLE_PROFILER: 1
+    networks:
+      - main-network
+  loadgenerator:
+    container_name: loadgenerator
+    image: gcr.io/google-samples/microservices-demo/loadgenerator:v0.8.1
+    networks:
+      - main-network
+    environment:
+      FRONTEND_ADDR: "frontend:8080"
+      USERS: "10"
+
+networks:
+  main-network:
+    driver: bridge

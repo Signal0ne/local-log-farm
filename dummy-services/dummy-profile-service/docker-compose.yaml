@@ -2,10 +2,12 @@ version: '3'
 
 services:
   dummy-profile-service:
+    container_name: dummy-profile-service
     image: 322456/dummy-profile-service:latest
     ports:
       - 8089:8089
   dummy-profile-database:
+    container_name: dummy-profile-database
     image: postgres:latest
     volumes:
       - ./db_migrations:/docker-entrypoint-initdb.d/:ro

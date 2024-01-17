@@ -1,10 +1,10 @@
 # Stage 1: Build the Angular app
-FROM node:14 AS builder
+FROM node:19.5.0-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install
+RUN NODE_ENV=development npm install
 COPY . .
-RUN npm run build --prod
+RUN NODE_ENV=development npm run build
 
 # Stage 2: Setup Nginx to serve the built Angular app
 FROM nginx:alpine

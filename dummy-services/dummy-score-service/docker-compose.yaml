@@ -2,6 +2,7 @@ version: '3'
 
 services:
   dummy-score-service:
+    container_name: dummy-score-service
     image: 322456/dummy-score-service:latest
     pid: host
     ports:
@@ -10,6 +11,7 @@ services:
       - shared-instrumentation-data:/shared-data
       - /proc:/host/proc
   dummy-score-database:
+    container_name: dummy-score-database
     image: mongo:latest
     pid: host
     ports:
