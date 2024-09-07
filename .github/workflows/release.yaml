@@ -27,3 +27,9 @@ jobs:
 
     - name: Build Docker images
       run: make build
+
+    - name: Push Docker images
+      run: make push
+
+    - name: Deploy to Kubernetes
+      run: make deploy
